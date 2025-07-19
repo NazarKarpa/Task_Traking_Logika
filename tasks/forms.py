@@ -1,5 +1,11 @@
 from django import forms
-from tasks.models import Task
+from tasks.models import Task, Comment
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['comment_to_task']
+
 
 class TaskForm(forms.ModelForm):
     class Meta:

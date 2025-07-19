@@ -25,3 +25,16 @@ class Task(models.Model):
 
     def __str__(self):
         return f'Title: {self.title}'
+
+class Comment(models.Model):
+    text = models.TextField()
+    comment_to_task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='comments')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
+
+    def __str__(self):
+        return f'comment: {self.comment_to_task}'
+
+
+
+class Project(models.Model):
+    pass

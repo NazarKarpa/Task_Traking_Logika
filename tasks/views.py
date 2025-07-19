@@ -58,7 +58,7 @@ class TaskCompleteView(LoginRequiredMixin, UserIsOwnerMixins, View):
 class TaskUpdateView(LoginRequiredMixin, UserIsOwnerMixins, UpdateView):
     model = models.Task
     form_class = TaskForm
-    template_name = 'tasks/task_ update_form.html'
+    template_name = 'tasks/task_update_form.html'
     success_url = reverse_lazy('task:task-list')
 
 
@@ -66,3 +66,5 @@ class TaskDeleteView(LoginRequiredMixin, UserIsOwnerMixins, DeleteView):
     model = models.Task
     success_url = reverse_lazy('tasks:task-list')
     template_name = 'tasks/task_delete_confirmation.html'
+
+

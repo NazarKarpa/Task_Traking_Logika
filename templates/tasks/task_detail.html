@@ -4,11 +4,24 @@
 <div class="container mt-3">
     <h2>{{ task.title }}</h2>
     <p>{{ task.description }}</p>
+
+
     
     <p>Статус: <span class="badge badge-primary">{{ task.status }}</span></p>
     <p>Пріоритет: <span class="badge badge-secondary">{{ task.priority }}</span></p>
 
     <a href="{% url 'tasks:task-update' task.id %}" class="btn btn-warning">Редагувати</a>
     <a href="{% url 'tasks:task-delete' task.id %}" class="btn btn-danger">Видалити</a>
+
+    <hr>
+    <h2 class="display-4">Comments</h2>
+    {% for comment in task.comments.all %}
+    <p class="fw-bold">User: {{ comment.user }}</p>
+        <p>Label: {{ comment.text }}</p>
+
+    {% empty %}
+    <p>No comments yet.</p>
+
+    {% endfor %}
 </div>
 {% endblock %}
