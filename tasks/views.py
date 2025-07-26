@@ -8,24 +8,27 @@ from tasks.forms import TaskForm, TaskFilterForm
 from django.http import HttpResponseRedirect
 
 
-class TaskListView(ListView):
+class TaskListView(LoginRequiredMixin, ListView):
     model = models.Task
     context_object_name = 'tasks'
     template_name = 'tasks/task_list.html'
+
+
 
     def get_queryset(self):
         queryset = super().get_queryset()
         status = self.request.GET.get('status', '')
         if status:
             queryset = queryset.filter(status=status)
-        return queryset
+            return queryset
 
+        return models.Task.objects.filter(creator = self.request.user).all()
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = TaskFilterForm(self.request.GET)
         return context
 
-class TaskDetailView(DetailView):
+class TaskDetailView(LoginRequiredMixin,DetailView):
     model = models.Task
     context_object_name = 'task'
     template_name = 'tasks/task_detail.html'
@@ -59,7 +62,7 @@ class TaskUpdateView(LoginRequiredMixin, UserIsOwnerMixins, UpdateView):
     model = models.Task
     form_class = TaskForm
     template_name = 'tasks/task_update_form.html'
-    success_url = reverse_lazy('task:task-list')
+    success_url = reverse_lazy('tasks:task-list')
 
 
 class TaskDeleteView(LoginRequiredMixin, UserIsOwnerMixins, DeleteView):
