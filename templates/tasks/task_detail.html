@@ -8,8 +8,8 @@
 
 
     
-    <p>Статус: <span class="badge badge-primary">{{ task.status }}</span></p>
-    <p>Пріоритет: <span class="badge badge-secondary">{{ task.priority }}</span></p>
+    <p>Статус: <span class="badge text-bg-primary">{{ task.status }}</span></p>
+    <p>Пріоритет: <span class="badge text-bg-secondary">{{ task.priority }}</span></p>
 
     <a href="{% url 'tasks:task-update' task.id %}" class="btn btn-warning">Редагувати</a>
     <a href="{% url 'tasks:task-delete' task.id %}" class="btn btn-danger">Видалити</a>

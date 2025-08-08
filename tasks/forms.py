@@ -9,6 +9,10 @@ class CommentForm(forms.ModelForm):
             'media': forms.FileInput()
         }
 
+    def __init__(self, *args, **kwargs):
+        super(CommentForm, self).__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs.update({'class': 'form-control'})
 
 class TaskForm(forms.ModelForm):
 
