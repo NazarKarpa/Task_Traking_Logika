@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% load custom_tags %}
 <div class="container mt-3">
     <h2>{{ task.title }}</h2>
     <p>{{ task.description }}</p>
@@ -16,6 +17,21 @@
     <hr>
     <h2 class="display-4">Comments</h2>
     {% for comment in task.comments.all %}
+    {% if comment.media %}
+    <div class="comment-media">
+        {% if comment.media.url|endswith:".jpg" or comment.media.url|endswith:".png" or comment.media.url|endswith:".jpeg" %}
+          <img src="{{ comment.media.url }}" alt="Зображення коментаря" style="max-width: 1000px;">
+        {% elif comment.media.url|endswith:".mp4" %}
+          <video width="320" height="240" controls>
+            <source src="{{ comment.media.url }}" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        {% else %}
+          <a href="{{ comment.media.url }}">Завантажити файл</a>
+        {% endif %}
+    </div>
+    {% endif %}
+
     <p class="fw-bold">User: {{ comment.user }}</p>
         <p>Label: {{ comment.text }}</p>
 
@@ -23,5 +39,14 @@
     <p>No comments yet.</p>
 
     {% endfor %}
+    <hr>
+    <h4>Додати коментар</h4>
+
+    <form action="{% url 'tasks:task-detail' task.id %}" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ comment_form.as_p }}
+      <button type="submit" class="btn btn-primary">Відправити</button>
+    </form>
+
 </div>
 {% endblock %}

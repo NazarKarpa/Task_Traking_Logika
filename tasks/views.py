@@ -1,19 +1,19 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from tasks import models
 from django.views.generic import ListView, DetailView, CreateView, View, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from tasks.mixins import UserIsOwnerMixins
-from tasks.forms import TaskForm, TaskFilterForm
+from tasks.forms import TaskForm, TaskFilterForm, CommentForm
 from django.http import HttpResponseRedirect
+
+from tasks.models import Comment
 
 
 class TaskListView(LoginRequiredMixin, ListView):
     model = models.Task
     context_object_name = 'tasks'
     template_name = 'tasks/task_list.html'
-
-
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -33,6 +33,22 @@ class TaskDetailView(LoginRequiredMixin,DetailView):
     context_object_name = 'task'
     template_name = 'tasks/task_detail.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['comment_form'] = CommentForm()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        comment_form = CommentForm(request.POST, request.FILES)
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.user = request.user
+            comment.comment_to_task = self.get_object()
+            comment.save()
+            return redirect('tasks:task-detail', pk=comment.comment_to_task.pk)
+
+        else:
+            pass
 
 class TaskCreateView(LoginRequiredMixin, CreateView):
     model = models.Task

@@ -30,10 +30,15 @@ class Comment(models.Model):
     text = models.TextField()
     comment_to_task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='comments')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
+    media = models.FileField(upload_to='comments_media/', blank=True, null=True)
+
 
     def __str__(self):
         return f'comment: {self.comment_to_task}'
 
+
+    def get_absolute_url(self):
+        return self.comment_to_task.get_absolute_url()
 
 
 class Project(models.Model):

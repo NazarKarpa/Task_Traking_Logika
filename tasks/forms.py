@@ -4,7 +4,10 @@ from tasks.models import Task, Comment
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
-        fields = ['comment_to_task']
+        fields = ['text', 'media']
+        widgets = {
+            'media': forms.FileInput()
+        }
 
 
 class TaskForm(forms.ModelForm):
