@@ -11,9 +11,10 @@ class CommentForm(forms.ModelForm):
 
 
 class TaskForm(forms.ModelForm):
+
     class Meta:
         model = Task
-        fields = ['title', 'description', 'status', 'priority', 'due_date']
+        fields = ['title', 'description', 'status', 'priority', 'due_date', 'members']
         widgets = {
             'due_date': forms.DateInput(attrs={'type': 'date'})
         }
