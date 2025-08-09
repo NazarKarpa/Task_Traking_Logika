@@ -16,13 +16,16 @@ class TaskListView(LoginRequiredMixin, ListView):
     template_name = 'tasks/task_list.html'
 
     def get_queryset(self):
-        queryset = super().get_queryset()
+
+        queryset = models.Task.objects.filter(creator = self.request.user).all()
         status = self.request.GET.get('status', '')
         if status:
             queryset = queryset.filter(status=status)
-            return queryset
 
-        return models.Task.objects.filter(creator = self.request.user).all()
+        return queryset
+
+
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = TaskFilterForm(self.request.GET)
