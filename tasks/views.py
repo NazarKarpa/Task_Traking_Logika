@@ -64,7 +64,7 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class TaskCompleteView(LoginRequiredMixin, UserIsOwnerMixins, View):
+class TaskCompleteView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         task = self.get_object()
         task.status = 'done'
