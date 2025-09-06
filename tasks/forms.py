@@ -15,7 +15,6 @@ class CommentForm(forms.ModelForm):
             self.fields[field].widget.attrs.update({'class': 'form-control'})
 
 class TaskForm(forms.ModelForm):
-
     class Meta:
         model = Task
         fields = ['title', 'description', 'status', 'priority', 'due_date', 'members']

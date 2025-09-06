@@ -64,6 +64,19 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
+class TaskDeleteView(LoginRequiredMixin, UserIsOwnerMixins, DeleteView):
+    model = models.Task
+    success_url = reverse_lazy('tasks:task-list')
+    template_name = 'tasks/task_delete_confirmation.html'
+
+
+class TaskUpdateView(LoginRequiredMixin, UserIsOwnerMixins, UpdateView):
+    model = models.Task
+    form_class = TaskForm
+    template_name = 'tasks/task_update_form.html'
+    success_url = reverse_lazy('tasks:task-list')
+
+
 class TaskCompleteView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         task = self.get_object()
@@ -74,19 +87,5 @@ class TaskCompleteView(LoginRequiredMixin, View):
     def get_object(self):
         task_id = self.kwargs.get('pk')
         return get_object_or_404(models.Task, pk=task_id)
-
-
-
-class TaskUpdateView(LoginRequiredMixin, UserIsOwnerMixins, UpdateView):
-    model = models.Task
-    form_class = TaskForm
-    template_name = 'tasks/task_update_form.html'
-    success_url = reverse_lazy('tasks:task-list')
-
-
-class TaskDeleteView(LoginRequiredMixin, UserIsOwnerMixins, DeleteView):
-    model = models.Task
-    success_url = reverse_lazy('tasks:task-list')
-    template_name = 'tasks/task_delete_confirmation.html'
 
 

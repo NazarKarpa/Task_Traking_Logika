@@ -16,7 +16,9 @@
 
 
     <hr>
-    <h2 class="display-4">Comments</h2>
+    <h4 class="display-6">Comments:</h4>
+    <br>
+
     {% for comment in task.comments.all %}
     {% if comment.media %}
     <div class="comment-media">
@@ -39,9 +41,10 @@
 
     {% empty %}
     <p>No comments yet.</p>
+    <hr>
 
     {% endfor %}
-    <hr>
+
     <h4>Додати коментар</h4>
 
     <form action="{% url 'tasks:task-detail' task.id %}" method="post" enctype="multipart/form-data">
